@@ -1,0 +1,104 @@
+{% extends 'film/base.html' %}
+{% load static %}
+
+{% block content %}
+{% for info in curr_film %}
+<main>
+    <section class="default-container">
+        <div class="player">
+            <iframe src="{{ info.trailer }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </section>
+    <section class="default-container">
+        <ul class="tabs-titles">
+            <li class="active">About</li>
+            <li>Cast</li>
+            <li>Reviews</li>
+        </ul>
+        <div class="tabs">
+            <div class="tab">
+                <p>Title: {{ info.title }} </p>
+                <p>Genre: {{ info.genre }}</p>
+                <p>Release: {{ info.release }}</p>
+                <p>Age for watching: {{ info.age_for_watching }}</p>
+                <p>Country: {{ info.country }}</p>
+                <p>{{ info.content }}</p>
+            </div>
+        </div>
+{% endfor %}
+    </section>
+     <section class="default-container  content">
+         {% if page_obj.number == 1 %}
+        <p class="lbl-p">Popular Shows And Movies</p>
+        <div class="border-line"></div>
+        <div class="posters">
+            {% for film in films %}
+                {% if film.pk <= 6 %}
+                    <div class="poster">
+                        <a href='{{ film.get_absolute_url }}'>
+                            <div class="rating">
+                                <p>{{ film.ratings }}\10</p>
+                            </div>
+                            <img src="{{film.photo.url}}" alt='photo'>
+                            <div class="poster-now-p">
+                                <p>{{film.genre}}</p>
+                                <p>{{film.title}}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+        </div>
+    </section>
+    <section class="default-container content">
+        {% if page_obj.number == 1 %}
+        <p class="lbl-added">Recently Added Shows</p>
+        <div class="border-line"></div>
+        <div class="posters">
+            {% for film in films %}
+                {% if film.pk > 6 and film.pk <= 12 %}
+                    <div class="poster">
+                        <a href='{{ film.get_absolute_url }}'>
+                            <div class="rating">
+                                <p>{{ film.ratings }}\10</p>
+                            </div>
+                            <img src="{{film.photo.url}}" alt='photo'>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        </div>
+    </section>
+    <section class="default-container content">
+        <p class="lbl-p">Recently Added Movies
+            <div class="border-line"></div>
+
+        <div class="posters">
+            {% for film in films %}
+                <div class="poster">
+                    <a href='{{ film.get_absolute_url }}'>
+                        <div class="rating">
+                            <p>{{ film.ratings }}\10</p>
+                        </div>
+                        <img src="{{film.photo.url}}" alt='photo'>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+    <ul class="list-pages">
+        {% for page in paginator.page_range %}
+        {% if page_obj.number == page %}
+            <li class="page-num page-num-selected" >{{ page }}</li>
+        {% else %}
+            <li class="page-num">
+                <a href="?page={{ page }}">{{ page }}</a>
+            </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+<script src="{% static 'film/js/script2.js' %}"></script>
+{% endblock %}

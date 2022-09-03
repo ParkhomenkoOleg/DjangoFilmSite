@@ -1,0 +1,21 @@
+{% extends 'film/base.html' %}
+
+{% block content %}
+<main>
+  <section class="login">
+    <div class="form-container">
+      <p>Register</p>
+      <form method="post">
+        {% csrf_token %}
+        {% for f in form %}
+          <label for="{{ f.id_for_label }}">{{ f.label }}: </label>
+          {{ f }}
+          <div class="form-error" >{{ f.errors }}</div>
+        {% endfor %}
+        <input type="submit" value="Register">
+      </form>
+      <p>or <span><a href="{% url 'login' %}">Log In</a></span></p>
+    </div>
+  </section>
+</main>
+{% endblock %}

@@ -1,0 +1,122 @@
+{% extends 'film/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<main>
+    <section>
+        <ul class="heroes">
+            <li>
+                <img class="hero" src="{% static 'film/images/angry.jpg' %}" alt="img">
+                <div class="default-container">
+                    <div class="hero-film"><p>Ravage</p></div>
+                </div>
+            </li>
+            <li>
+                <img class="hero" src="{% static 'film/images/moon2.jpg' %}" alt="img">
+                <div class="default-container">
+                    <div class="hero-film"><p>Moon</p></div>
+                </div>
+            </li>
+            <li>
+                <img class="hero" src="{% static 'film/images/civilization.jpg' %}" alt="img">
+                <div class="default-container">
+                    <div class="hero-film"><p>Civilization</p></div>
+                </div>
+            </li>
+            <li>
+                <img class="hero" src="{% static 'film/images/astronaut.jpg' %}" alt="img">
+                <div class="default-container">
+                    <div class="hero-film"><p>Scientific</p></div>
+                </div>
+            </li>
+        </ul>
+        <div class="default-container">
+            <div class="spans">
+                <span class="active"></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        </div>
+        <div class="fader">
+            <div class="fader-grad0"></div>
+            <div class="fader-grad1"></div>
+        </div>
+    </section>
+    <section class="default-container  content">
+        {% if page_obj.number == 1 %}
+        <p class="lbl-p">Popular Shows And Movies</p>
+        <div class="border-line"></div>
+        <div class="posters">
+            {% for film in posts %}
+                {% if film.pk <= 6 %}
+                    <div class="poster">
+                        <a href='{{ film.get_absolute_url }}'>
+                            <div class="rating">
+                                <p>{{ film.ratings }}\10</p>
+                            </div>
+                            <img src="{{film.photo.url}}" alt='photo'>
+                            <div class="poster-now-p">
+                                <p>{{film.genre}}</p>
+                                <p>{{film.title}}</p>
+                            </div>
+                         </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+    </section>
+    <section class="default-container content">
+        {% if page_obj.number == 1 %}
+        <p class="lbl-added">Recently Added Shows</p>
+        <div class="border-line"></div>
+        <div class="posters">
+            {% for film in posts %}
+                {% if film.pk > 6 and film.pk <= 12 %}
+                    <div class="poster">
+                        <a href='{{ film.get_absolute_url }}'>
+                            <div class="rating">
+                                <p>{{ film.ratings }}\10</p>
+                            </div>
+                            <img src="{{film.photo.url}}" alt='photo'>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        </div>
+    </section>
+    <section class="default-container content">
+        <p class="lbl-p">Recently Added Movies
+        <div class="border-line"></div>
+        <div class="posters">
+            {% for film in posts %}
+                <div class="poster">
+                    <a href='{{ film.get_absolute_url }}'>
+                        <div class="rating">
+                            <p>{{ film.ratings }}\10</p>
+                        </div>
+                        <img src="{{film.photo.url}}" alt='photo'>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <ul class="list-pages">
+        {% for page in paginator.page_range %}
+        {% if page_obj.number == page %}
+            <li class="page-num page-num-selected" >{{ page }}</li>
+        {% else %}
+            <li class="page-num">
+                <a href="?page={{ page }}">{{ page }}</a>
+            </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</main>
+
+<script src="{% static 'film/js/script.js' %}"></script>
+{% endblock %}

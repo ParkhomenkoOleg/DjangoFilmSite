@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FILMS</title>
+    <link type="text/css" href="{% static 'film/css/style.css' %}" rel='stylesheet' />
+    <link type="image/x-icon" href="{% static 'film/icon/icon-play.svg' %}" rel="SHORTCUT ICON"/>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+</head>
+<body>
+
+{% block mainmenu %}
+    <header>
+        <nav class="header-nav">
+            <div class='header-nav-logo default-container'>
+                <ul>
+                    <li>
+                        <a href="{% url 'home' %}">
+                            <img class="" src="{% static 'film/icon/Logo.svg' %}" alt="logo">
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="menu">
+
+                    <form class="search" method=POST action="{% url 'search_film' %}">
+                    {% csrf_token %}
+                        <input class="search__input" type="text" placeholder="Search" name="searched" autocomplete="off">
+                        <button type="button" class="search__btn">
+                            <img class="" src="{% static 'film/icon/SearchIcon.svg' %}" alt="logo">
+                        </button>
+                    </form>
+                    <li><a href="">LIVE TV</a></li>
+                    <li><a href="">MOVIES</a></li>
+                    <li><a href="">SHOWS</a></li>
+                    {% if request.path == '/' %}
+                        <div class="dropdown">
+                            <img src="{% static 'film/icon/MenuIcon.svg' %}" alt="MenuIcon">
+                            <div class="dropdown-content">
+                                {% for c in cats %}
+                                {% if c.film__count > 0 %}
+                                    <a class="" href="{{ c.get_absolute_url }}">{{c.name}}</a>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if request.user.is_authenticated %}
+                        <li>{{ user.username }}</li>
+                        <li><a href="{% url 'logout' %}">LOG OUT</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">LOG IN</a></li>
+                        <li><a class="button-register" href="{% url 'register' %}">REGISTER</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+{% endblock mainmenu %}
+
+{% block content %}
+
+{% endblock %}
+
+{% block footer %}
+    <footer>
+        <div class="footer-wrapper default-container">
+            <div class="f-item">
+                <p class="" >Main links</p>
+                <ul>
+                    <li>Movies</li>
+                    <li>Shows</li>
+                    <li>Live TV</li>
+                </ul>
+            </div>
+            <div class="f-item">
+                <p>Other Links</p>
+                <ul>
+                    <li>About Us</li>
+                </ul>
+            </div>
+            <div class="f-item">
+                <p>Oleg and Ruslana Code</p>
+                <ul>
+                    <li>FilmCode</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-social  ">
+            <p>Follow us via social media:</p>
+            <a href="">
+                <img src="{% static 'film/icon/Instagram.svg' %}" alt="facebook">
+                <img src="{% static 'film/icon/Discord.svg' %}" alt="discord">
+                <img src="{% static 'film/icon/Telegram.svg' %}" alt="telegram">
+            </a>
+        </div>
+    </footer>
+
+{% endblock %}
+
+</body>
+</html>
